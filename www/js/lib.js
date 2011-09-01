@@ -55,10 +55,28 @@ $('.page-map').live("pagecreate", function() {
 
 function geolocationSuccess() {
     var latlng = new google.maps.LatLng(-33.398647,-70.581193);
+    
     map.setCenter(latlng);
+    getClosestPlaces(-33.398647,-70.581193);
+    
+    
 }
 
 function geolocationError() {
     var latlng = new LatLng(-33.398647,-70.581193);
     map.setCenter(latlng);
+}
+
+function getClosestPlaces(Lat, Long){
+	
+
+	$.getJSON('http://kaipi.me/gasoline/closest?api_key=770f1b31a224fad01ef3850a89667b77bbb33f5df169e785da68fdfe7be67824&lat='+Lat+'&lng='+Long,
+		function(data){
+			//dibujar puntos
+			$.each(data.stations, function(el){
+				var point = new google.maps.LatLng(el.lat,	el.lng);
+				map.addOverlay(new google.maps.Marker(point));
+			});
+			
+	});
 }
